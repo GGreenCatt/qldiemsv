@@ -1,0 +1,658 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+html,body{
+    height: 100%;width: 100%;
+    background-color: rgba(32,32,32,255);
+}
+.sidenav{
+    overflow: hidden;
+    float: left;
+    background-color: rgba(77,68,181,255);
+    width: calc(100% - 84.5%);
+    height: 100%;
+    position: fixed;
+    padding: 10px 8px 0 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.sidenav h1{
+    font-size: 2vw;
+    margin-bottom: 32px;
+    color: white;
+    a{
+        text-decoration: none;
+        color: white;
+    }
+}
+.sidenav ul{
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.sidenav ul::-webkit-scrollbar{
+    display: none;
+}
+    .sidenav li{
+        width: 100%;
+        flex-direction: column;
+        display: flex;
+        list-style: none;
+        padding: 20px 10px;
+        align-items: flex-start;
+        
+    }
+    .sidenav li .active{
+        color: goldenrod;
+        span{
+            color: goldenrod;
+        }
+    }
+    .sidenav li a{
+        margin-left: 10px;
+        align-items: center;
+        display: flex;
+        color: white;
+        font-size: 1.5vw;
+        text-decoration: none;
+    }
+    .dropdown {
+        display: flex;
+        margin-left: 27px;
+      }
+    .dropdown li{
+        display: none;
+        padding: 20px 0;
+        color: white;
+    }
+    .dropdown li a{
+        font-size: 16px;
+    }
+    .sidenav .open .dropdown li {
+        display: block;
+      }
+    .user_DRD{
+        position: relative;
+        margin: 50px;
+    }
+    .user_DRD_CT{
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        top: 39px;
+        right: 0px;
+    }
+    .user_DRD_CT a{
+        position: relative;
+        color: black;
+        width: 200px;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+
+    }
+    .user_DRD:hover .user_DRD_CT{display: block;}
+.main{
+    float: right;
+    right: 0;
+    width: 84.5%;
+    height: 100%;
+}
+.controlpanel{
+    z-index: 1;
+    position: fixed;
+    padding: 0 10px;
+    justify-content: space-between;
+    display: flex;
+    height: 70px;
+    width: inherit;
+    background-color: rgba(39,39,56,255);
+    color: whitesmoke;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+    .controlpanel .status{
+        margin-left: 20px;
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+    .controlpanel .menu{
+        align-items: center;
+        display: flex;
+        list-style: none;
+        flex-direction: row;
+        padding-right: 10px;
+    }
+    .menu li{
+        text-transform: capitalize;
+        display: flex;
+        flex-direction: column;
+        background-color: rgba(32,32,32,255);
+        margin: 5px;
+        padding: 10px 12px;
+        border-radius: 7px;
+    }
+    .menu li:hover{
+        background-color: gray;
+        cursor: pointer;
+    }
+    .screen{
+        margin-top: 70px;
+        padding: 28px 28px 0 28px;
+    }
+    .row-1{
+        display:flex;
+        margin-bottom: 28px;
+        background-color: rgba(39,39,56,255);
+        width: 100%;
+        height: 100px;
+        border-radius: 3px;
+        align-items: center;
+        padding-left: 30px;
+    }
+    .col-4x{
+        display:flex;
+        align-items: center;
+        width: 25%;
+    }
+    .icon-box{
+      background-color: rgb(42, 55, 117);
+      border-radius: 50%;
+      padding: 10px;
+      height: 60px;width: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
+    }
+    .icon{
+        font-size: 30px;
+        color: white;
+    }
+    .icon-menu{
+        margin-right: 10px;
+        font-size: 18px;
+        color: white;
+    }
+    .text{
+        color: white;
+    }
+    .contaner-4x{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        margin-bottom: 50px;
+    }
+    .contaner-2x{
+        display: flex;
+        justify-content: space-evenly;
+    
+        .box{
+            width: 48%;
+            background-color: azure;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+    }
+    
+    .status-box{
+        position: relative;
+        height: 150px;
+        color: white;
+        width: 23.5%;
+        border-radius: 5px 5px 0 0;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        h1{
+            margin: 5px;
+        }
+    }
+    .status-box .more{
+        position: absolute;
+        text-align: center;
+        bottom: 0px;
+        background-color: rgb(128, 128, 128, 0.6) ;
+        height: 30px;
+        width: 293.5px;
+        padding: 5px 0;
+        z-index: 1;
+        a{
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            padding: 0 100px;
+        }
+    }
+    .more:hover{
+        background-color: rgb(128, 128, 128, 1) ;
+    }
+    .status-box .icon{
+        position: absolute;
+        right: 0;
+        top: 10px;
+        font-size: 120px;
+        opacity: 0.3;
+        padding-right: 3px;
+    }
+/*-------------------------------Danh sách----------------------------------*/
+.row-2{
+    display:flex;
+    margin-bottom: 28px;
+    background-color: rgba(39,39,56,255);
+    width: 100%;
+    height: 70px;
+    border-radius: 3px;
+    align-items: center;
+    padding: 0 30px;
+    justify-content: space-between;
+}
+form.example input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+  }
+  
+  form.example button {
+    float: left;
+    width: 20%;
+    padding: 5.5px;
+    background: #2196F3;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none;
+    cursor: pointer;
+  }
+  
+  form.example button:hover {
+    background: #0b7dda;
+  }
+  
+  form.example::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .Add{
+    padding: 15px 20px;
+    background-color: rgba(72,133,237,255);
+    border-radius: 5px;
+    border: none;
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    
+  }
+  .list{
+    counter-reset: tableCount;
+    font-weight: bold;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .list td{
+    padding: 25px 0;
+    background-color: rgba(39,39,56,255);
+    border-bottom: 1px solid gray;
+    text-align: center;
+  }
+  .list th{
+    
+    padding: 10px 0;
+    text-align: center;
+    background-color: rgba(42,49,74,255);
+    border-bottom: 1px solid gray;
+  }
+  .list tr th:first-child,td:first-child{
+    padding-left: 20px; 
+  }
+  .list td:first-child::before{
+    content: counter(tableCount); 
+    counter-increment: tableCount;  
+  }
+
+  .list tr td:nth-child(3){
+    color: cadetblue;
+  }
+  .list td img{
+    margin-right: 10px;
+    height: 30px;width: 30px;
+    border-radius: 50%;
+  }
+  .list td:last-child a{
+    color: white;
+    text-decoration: none;
+    border: 1px solid white;
+    padding: 5px 10px;
+    margin-left: 10px;
+
+  }
+  /*-------------------------------Thêm----------------------------------*/
+  .row-3{
+    color: white;
+    display:flex;
+    flex-direction: column;
+    margin-bottom: 28px;
+    background-color: rgba(39,39,56,255);
+    width: 100%;
+    height: 540px;
+    border-radius: 3px;
+    padding: 0 30px;
+}
+.row-3 h5{
+    padding: 20px 0;
+    font-size: 18px;
+}
+.row-3 h3{
+    margin-bottom: 15px;
+}
+.contaner{
+    margin-top: 20px;
+    display: flex;
+}
+.col-left{
+    width: 25%;
+}
+.col-left img{
+    margin: 10px 0;
+    height: 100px;width: 100px;
+}
+.add-button button{
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: rgba(72,133,237,255);
+    border: none;
+    margin-left: 5px;
+    color: white;
+    cursor: pointer;
+}
+.col-right{
+    width: 75%;
+    display: flex;
+}
+.col-right .col-1{
+    width: 50%;
+    padding: 10px;
+}
+.col-right .col-1 .mb-3{
+    width: 100%;
+    margin-bottom: 16px;
+    textarea{font-size: large;}
+}
+.mb-3 p{
+    margin-bottom: 5px;
+    color: white;
+}
+.mb-3 input[type=text],input[type=date],select {
+    width: 100%;
+    padding: 15px;
+    background-color: rgba(32,32,32,255);
+    border: none;
+    outline: 1px solid gray;
+    border-radius: 5px;
+    color: white;
+}
+.mb-3 textarea{
+    background-color:rgba(32,32,32,255);
+    border-radius: 5px;
+    color: white;
+    width: 100%;
+    border: none;
+    outline: 1px solid gray;
+}
+.mb-3 img{
+    margin: 10px 0;
+    height: 100px;width: 100px;
+}
+
+/*-------------------------------Thông tin----------------------------------*/
+.row-4{
+    color: white;
+    display:flex;
+    flex-direction: column;
+    margin-bottom: 28px;
+    background-color: rgba(39,39,56,255);
+    width: 100%;
+    height: 440px;
+    border-radius: 5px; 
+}
+.profile-banner{
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+    background-image: url(Pic/profile-banner.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 140px;
+}
+.info{
+    height: calc(100% - 140px);
+    padding: 85px 30px 0 30px;
+}
+.info img{
+  position: absolute;
+  border-radius: 50%;
+  width: 130px;height: 130px;
+  border: 5px solid white;
+  top: 170px;
+}
+.info p{
+    margin: 5px 0;
+    color: rgb(156, 49, 156);
+}
+.info .box{
+    margin: 15px 0;
+    display: flex;
+}
+.box-1{
+    width: 50%;
+    display:flex;
+    align-items: center;
+}
+.lorem{
+    margin: 10px 0;
+    width: 40%;
+    line-height: 1.5;
+    color: gray;
+}
+/*---------------------Banner---------------------------------*/
+.mySlides {
+    display: none;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 660px;
+    z-index: -1;
+  }
+.slideshow-container {
+  position: relative;
+}
+.dot {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: gray;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+.dotcenter{
+  position: absolute;
+  bottom: 5%;
+  left: 0; right: 0;
+}
+.dotactive {
+  background-color: white;
+}
+/*---------------------------------Trang chủ---------------------------*/
+.row-5{
+    padding-top: 28px;
+    margin: 28px 28px;
+    color: white;
+    display:flex;
+    flex-direction: column;
+    background-color: rgba(39,39,56,255);
+    width: calc(100% - 56px);
+    height: 440px;
+    border-radius: 5px;
+}
+.row-5 h1{
+    text-align: center;
+}
+.row-5 .box{
+    margin-top: 30px;
+    justify-content: space-evenly;
+    display: flex;
+    width: 100%; 
+    transition: 1s;
+}
+.row-5 .box .card{
+    display: flex;
+    width: 23%;
+    height: 200px;
+    flex-direction: column;
+    position: relative;
+    transition: 10s;
+}
+.row-5 .box .card img{
+    width: 100%;
+    height: 150px;
+    transition: 1s;
+}
+.row-5 .box .card .text{
+    color: black;
+    height: 250px;
+    width: 100%;
+    padding: 15px;
+    background-color: white;
+    border-radius: 0 0 5px 5px;
+}
+.row-5 .box .card .text h3{
+    margin-bottom: 10px;
+}
+.row-5 .box .card .text p{
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+/*=============Lớp==================*/
+.list-box{
+    background-color: gray;
+    position: relative;
+    width: 31%;
+    height: 330px;
+    box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2), 0 6px 20px 0 rgba(255, 255, 255, 0.19);
+    color: black;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+.list-box .class-picture{
+    height: 140px;
+    background-image: url(Pic/banner-PF.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.list-box .class-content{
+    padding:5px 10px;
+    h2{line-height: 50px;}
+    p{line-height: 20px;}
+}
+.class-content .button{
+    position: relative;
+    bottom: -20px;
+    text-decoration: none;
+    background-color: orange;
+    padding: 10px 30px;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.class-content .button:hover{
+    background-color: darkgoldenrod;
+}
+/*---------------------Phản hồi---------------------------*/
+.row-6{
+    color: white;
+    display:flex;
+    flex-direction: column;
+    margin-bottom: 28px;
+    background-color: rgba(39,39,56,255);
+    width: 100%;
+    height: 540px;
+    border-radius: 3px;
+    padding: 0 50px;
+}
+.row-6 h5{
+    padding: 20px 0;
+    font-size: 18px;
+}
+.row-6 h3{
+    margin-bottom: 15px;
+}
+.contaner{
+    margin-top: 20px;
+    display: flex;
+}
+
+.add-button button{
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: rgba(72,133,237,255);
+    border: none;
+    margin-left: 5px;
+    color: white;}
+.input{
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(32,32,32,255);
+    border: none;
+    outline: 1px solid gray;
+    border-radius: 5px;
+    color: white;
+    font-size: large;
+        textarea{
+            font-size: 30px;
+        }
+}
+.traloi{
+    textarea{
+        background-color: rgba(32,32,32,255);
+        margin: 10px 0 15px 0;
+        height: 200px;
+        width: 100%;
+        color: white;
+        font-size: large;
+    }
+    button{
+        padding: 10px 20px;
+        border-radius: 5px;
+        background-color: rgba(72,133,237,255);
+        border: none;
+        margin-left: 5px;
+        color: white;
+        position: relative;
+        left: 94%;
+    }
+}
+/*-----------------------------Footer----------------------------------*/
+.footer{
+    background-color: rgba(39,39,56,255);
+    height: 100px;
+    width: calc(100% - 56px);
+    margin: 28px 28px;
+
+}

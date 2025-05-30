@@ -1,0 +1,4 @@
+controller\DatabaseConnection.class
+controller\login.class
+com\mycompany\qldiemsv\JakartaRestConfiguration.class
+com\mycompany\qldiemsv\resources\JakartaEE10Resource.class
