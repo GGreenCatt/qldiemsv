@@ -153,6 +153,9 @@
                 </div>
             </div>
         </form>
+    <div class="footer">
+        <p>Copyright © Thiết kế & Xây dựng bởi Dung & Long 2025</p>
+        </div>
     </div>
 </div>
 

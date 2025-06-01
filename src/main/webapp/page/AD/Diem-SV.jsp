@@ -113,6 +113,9 @@ String sql = "SELECT diem.*, monhoc.TEN_MH, " +
 }
 %>
         </table>
+        <div class="footer">
+        <p>Copyright © Thiết kế & Xây dựng bởi Dung & Long 2025</p>
+        </div>
     </div>
 </div>
 <script src="../../JS.JS"></script>

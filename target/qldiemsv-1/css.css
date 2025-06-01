@@ -649,10 +649,22 @@ form.example input[type=text] {
     }
 }
 /*-----------------------------Footer----------------------------------*/
-.footer{
-    background-color: rgba(39,39,56,255);
-    height: 100px;
+/* Trong file css.css */
+.footer {
+    background-color: rgba(39, 39, 56, 255);
+    height: auto; /* Cho phép chiều cao tự động điều chỉnh theo nội dung */
+    min-height: 60px; /* Giữ chiều cao tối thiểu */
     width: calc(100% - 56px);
-    margin: 28px 28px;
+    margin: 28px; /* Điều chỉnh margin nếu cần, hoặc chỉ margin-top */
+    padding: 20px; /* Thêm padding để nội dung không sát viền */
+    color: white; /* Màu chữ cho nội dung footer */
+    text-align: center; /* Căn giữa nội dung */
+    box-sizing: border-box; /* Đảm bảo padding và border không làm tăng kích thước tổng */
+    position: fixed;
+    bottom: 0;
+}
 
+.footer p {
+    margin: 5px 0; /* Khoảng cách giữa các dòng văn bản */
+    font-size: 0.9em; /* Kích thước chữ nhỏ hơn một chút */
 }
