@@ -82,10 +82,11 @@
                 }
             %>
         </table>
-        <div class="footer">
+
+    </div>
+        <div class="footer" style="bottom: 0">
         <p>Copyright © Thiết kế & Xây dựng bởi Dung & Long 2025</p>
         </div>
-    </div>
 </div>
 
 <script src="../../JS.JS"></script>

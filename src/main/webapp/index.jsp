@@ -14,15 +14,13 @@
     <title>Document</title>
 </head>
 <body>
-    <section class="vh-100" style="background-color: #9A616D;">
+    <section class="vh-100" style="background: linear-gradient(135deg, #add8e6, #87ceeb); ">
         <div class="container py-5 h-100">
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col col-xl-10">
               <div class="card" style="border-radius: 1rem;">
                 <div class="row g-0">
-                  <div class="col-md-6 col-lg-5 d-none d-md-block">
-                    <img src="https://indiater.com/wp-content/uploads/2019/03/education-banner-with-work-desk-study-concept.jpg " 
-                      alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+                    <div class="col-md-6 col-lg-5 d-none d-md-block" style="background-image: url(Pic/logoDN.png); background-size: cover">
                   </div>
                   <div class="col-md-6 col-lg-7 d-flex align-items-center">
                     <div class="card-body p-4 p-lg-5 text-black">

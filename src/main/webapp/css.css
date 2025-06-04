@@ -105,7 +105,7 @@ html,body{
     float: right;
     right: 0;
     width: 84.5%;
-    height: 100%;
+    height: auto;
 }
 .controlpanel{
     z-index: 1;
@@ -223,14 +223,14 @@ html,body{
         bottom: 0px;
         background-color: rgb(128, 128, 128, 0.6) ;
         height: 30px;
-        width: 293.5px;
+        width: 100%;
         padding: 5px 0;
         z-index: 1;
         a{
             text-decoration: none;
             color: white;
             font-weight: bold;
-            padding: 0 100px;
+            
         }
     }
     .more:hover{
@@ -651,17 +651,16 @@ form.example input[type=text] {
 /*-----------------------------Footer----------------------------------*/
 /* Trong file css.css */
 .footer {
-    background-color: rgba(39, 39, 56, 255);
     height: auto; /* Cho phép chiều cao tự động điều chỉnh theo nội dung */
     min-height: 60px; /* Giữ chiều cao tối thiểu */
     width: calc(100% - 56px);
-    margin: 28px; /* Điều chỉnh margin nếu cần, hoặc chỉ margin-top */
+    margin:0 28px; /* Điều chỉnh margin nếu cần, hoặc chỉ margin-top */
     padding: 20px; /* Thêm padding để nội dung không sát viền */
     color: white; /* Màu chữ cho nội dung footer */
     text-align: center; /* Căn giữa nội dung */
     box-sizing: border-box; /* Đảm bảo padding và border không làm tăng kích thước tổng */
-    position: fixed;
-    bottom: 0;
+    position: absolute;
+    width: 80.7%;
 }
 
 .footer p {

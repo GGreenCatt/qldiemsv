@@ -112,7 +112,6 @@
     <%@ include file="../../Extend/controllpanel.jsp" %>
     <div class="screen">
         <form action="" method="post">
-            <div class="row-3" style="height: 70px;"></div>
             <div class="row-3">
                 <h5>Thông tin sinh viên</h5><hr>
                 <div class="contaner">

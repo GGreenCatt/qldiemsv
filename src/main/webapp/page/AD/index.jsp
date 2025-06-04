@@ -47,22 +47,22 @@
                 <div class="card">
                     <img src="../../Pic/giang-day.png" alt="">
                     <div class="text">
-                      <h3>Giảng dạy</h3>
-                      <p>Thời khóa biểu, phân công giảng dạy, điểm danh</p>
+                      <h3>Xem điểm </h3>
+                      <p>Tra cứu điểm sinh viên các lớp cố vấn và lớp giảng dạy.</p>
                     </div>
                 </div>
                 <div class="card">
                   <img src="../../Pic/giang-day.png" alt="">
                   <div class="text">
-                    <h3>Giảng dạy</h3>
-                    <p>Thời khóa biểu, phân công giảng dạy, điểm danh</p>
+                    <h3>Quản lý Lớp học</h3>
+                    <p>Xem danh sách sinh viên, thông tin các lớp đang giảng dạy.</p>
                   </div>
               </div>
               <div class="card">
                 <img src="../../Pic/giang-day.png" alt="">
                 <div class="text">
-                  <h3>Giảng dạy</h3>
-                  <p>Thời khóa biểu, phân công giảng dạy, điểm danh</p>
+                  <h3>Phản hồi Sinh viên</h3>
+                  <p>Xem và trả lời các câu hỏi, phản hồi từ sinh viên.</p>
                 </div>
             </div>
             <div class="card">
@@ -77,45 +77,45 @@
 
         <div class="row-5">
           <h1>
-              Dịch vụ cho giảng viên
+              Tiện ích khác
           </h1>
           <div class="box">
               <div class="card">
                   <img src="../../Pic/giang-day.png" alt="">
                   <div class="text">
-                    <h3>Giảng dạy</h3>
-                    <p>Thời khóa biểu, phân công giảng dạy, điểm danh</p>
+                    <h3>Thông tin cá nhân</h3>
+                          <p>Xem và cập nhật thông tin cá nhân, tài khoản.</p>
                   </div>
               </div>
               <div class="card">
                 <img src="../../Pic/giang-day.png" alt="">
                 <div class="text">
-                  <h3>Giảng dạy</h3>
-                  <p>Thời khóa biểu, phân công giảng dạy, điểm danh</p>
+                  <h3>Tài liệu Môn học</h3>
+                          <p>Quản lý và chia sẻ tài liệu, giáo trình cho sinh viên.</p>
                 </div>
             </div>
             <div class="card">
               <img src="../../Pic/giang-day.png" alt="">
               <div class="text">
-                <h3>Giảng dạy</h3>
-                <p>Thời khóa biểu, phân công giảng dạy, điểm danh</p>
+                <h3>Lịch làm việc</h3>
+                          <p>Xem lịch coi thi, chấm bài, các sự kiện của khoa/trường.</p>
               </div>
           </div>
           <div class="card">
             <img src="../../Pic/giang-day.png" alt="">
             <div class="text">
-              <h3>Giảng dạy</h3>
-              <p>Thời khóa biểu, phân công giảng dạy, điểm danh</p>
+              <h3>Nghiên cứu Khoa học</h3>
+                          <p>Thông tin về các đề tài, dự án nghiên cứu khoa học.</p>
 
             </div>
         </div>
           </div>
       </div>
-<div class="footer">
-        <p>Copyright © Thiết kế & Xây dựng bởi Dung & Long 2025</p>
-        </div>
     </div>
-
+        <div class="footer">
+            <p>Copyright © Thiết kế & Xây dựng bởi Dung & Long 2025</p>
+        </div>
+</div>
     <script src="../../JS.JS"></script>
 </body>
 </html>
