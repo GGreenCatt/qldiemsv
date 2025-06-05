@@ -30,17 +30,16 @@
                         <div class="d-flex align-items-center mb-3 pb-1">
 
 
-                          <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
                           <span class="h1 fw-bold mb-0">Đăng nhập</span>
                         </div>
                         <div class="form-outline mb-4">
+                          <label class="form-label" for="form2Example17">Tên đăng nhập</label>
                           <input style="border: 1px solid black;" type="text" id="form2Example17" name="username" class="form-control form-control-lg" required/>
-                          <label class="form-label" for="form2Example17">Tải khoản</label>
                         </div>
       
                         <div class="form-outline mb-4">
-                          <input style="border: 1px solid black;" type="password" name="password" id="form2Example27" class="form-control form-control-lg" required/>
                           <label class="form-label" for="form2Example27">Mật khẩu</label>
+                          <input style="border: 1px solid black;" type="password" name="password" id="form2Example27" class="form-control form-control-lg" required/>
                         </div>
       
                         <div class="pt-1 mb-4">
