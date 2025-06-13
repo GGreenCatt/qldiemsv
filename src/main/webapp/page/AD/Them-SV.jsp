@@ -73,7 +73,7 @@
                                 <input type="text" name="tensv" placeholder="Họ tên..." required />
                             </div>
                             <div class="mb-3">
-                                <p>Ngày sinh &amp; Giới tính</p>
+                                <p>Ngày sinh <span style="margin-left: 53%">Giới tính</span></p>
                                 <input style="width: 65%" type="date" name="ngaysinh" placeholder="Ngày sinh..." />
                                 <input style="width: 30%; margin-left: 4%" type="text" name="gioitinh" placeholder="Giới tính..." />
                             </div>
@@ -102,7 +102,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="add-button">
+                <div class="add-button" style="margin-left: 4px">
                     <button type="submit" name="save">Lưu</button>
                 </div>
             </div>

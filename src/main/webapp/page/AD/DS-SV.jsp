@@ -65,7 +65,7 @@
             <form class="example" method="post" style="max-width:300px">
                 <input style="width: 250px;" type="text" placeholder="Họ tên..." name="search2" id="myInput" onkeyup="myFunction()" value="<%= (searchText != null) ? searchText : "" %>">
             </form>
-            <button class="Add"><a class="Add" href="Them-SV.jsp">+Thêm học sinh</a></button>
+            <button class="Add"><a class="Add" href="Them-SV.jsp">+Thêm sinh viên</a></button>
         </div>
 
         <table class="list" id="myTable">

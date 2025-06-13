@@ -122,7 +122,7 @@
                                 <input type="text" value="<%= TEN_SV %>" name="tensv" placeholder="Nguyễn Văn A" />
                             </div>
                             <div class="mb-3">
-                                <p>Ngày sinh &amp; Giới tính</p>
+                                <p>Ngày sinh <span style="margin-left: 53%">Giới tính</span></p>
                                 <input style="width: 65%" type="date" name="ngaysinh" value="<%= NGAY_SINH %>" placeholder="21/06/2004" />
                                 <input style="width: 30%; margin-left: 4%;" type="text" name="gioitinh" value="<%= GIOITINH %>" placeholder="" />
                             </div>
@@ -130,9 +130,8 @@
                                 <p>Email</p>
                                 <input type="text" name="email" value="<%= GMAIL %>" placeholder="Hello@gmail.com" />
                             </div>
-                            <div class="mb-3">
-                                <p>Địa chỉ</p>
-                                <input type="text" name="diachi" value="<%= DIACHI %>" />
+                            <div class="add-button" style="margin-left: 4px">
+                                <button type="submit" name="save">Lưu</button>
                             </div>
                         </div>
                         <div class="col-1">
@@ -144,8 +143,9 @@
                                 <p>Mã sinh viên</p>
                                 <input type="text" name="masv" value="<%= MA_SV %>" placeholder="000123" />
                             </div>
-                            <div class="add-button">
-                                <button type="submit" name="save">Lưu</button>
+                            <div class="mb-3">
+                                <p>Địa chỉ</p>
+                                <input type="text" name="diachi" value="<%= DIACHI %>" />
                             </div>
                         </div>
                     </div>
