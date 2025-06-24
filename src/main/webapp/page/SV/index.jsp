@@ -42,33 +42,73 @@
 
         <!-- Dịch vụ -->
         <div class="row-5">
-            <h1>Dịch vụ cho giảng viên</h1>
+            <h1>Dịch vụ cho sinh viên</h1>
             <div class="box">
-                <% for (int i = 0; i < 4; i++) { %>
+
                 <div class="card">
                     <img src="../../Pic/giang-day.png" alt="">
                     <div class="text">
-                        <h3>Giảng dạy</h3>
-                        <p>Thời khóa biểu, phân công giảng dạy, điểm danh</p>
+                        <h3>Xem lịch học</h3>
+                        <p>Tra cứu thời khóa biểu, lịch thi và các sự kiện học tập của bạn.</p>
                     </div>
                 </div>
-                <% } %>
+                <div class="card">
+                    <img src="../../Pic/giang-day.png" alt="">
+                    <div class="text">
+                        <h3>Xem điểm cá nhân</h3>
+                        <p>Kiểm tra điểm các môn học, điểm rèn luyện và kết quả học tập chi tiết.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="../../Pic/giang-day.png" alt="">
+                    <div class="text">
+                        <h3>Đăng ký môn học</h3>
+                        <p>Thực hiện đăng ký các môn học cho kỳ học mới một cách dễ dàng.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="../../Pic/giang-day.png" alt="">
+                    <div class="text">
+                        <h3>Gửi phản hồi</h3>
+                        <p>Gửi câu hỏi, ý kiến và phản hồi trực tiếp đến giảng viên hoặc nhà trường.</p>
+                    </div>
+                </div>
+
             </div>
         </div>
 
         <!-- Dịch vụ lặp lại -->
         <div class="row-5">
-            <h1>Dịch vụ cho giảng viên</h1>
+            <h1>Dịch vụ cho sinh viên</h1>
             <div class="box">
-                <% for (int i = 0; i < 4; i++) { %>
                 <div class="card">
                     <img src="../../Pic/giang-day.png" alt="">
                     <div class="text">
-                        <h3>Giảng dạy</h3>
-                        <p>Thời khóa biểu, phân công giảng dạy, điểm danh</p>
+                        <h3>Xem lịch học</h3>
+                        <p>Tra cứu thời khóa biểu, lịch thi và các sự kiện học tập của bạn.</p>
                     </div>
                 </div>
-                <% } %>
+                <div class="card">
+                    <img src="../../Pic/giang-day.png" alt="">
+                    <div class="text">
+                        <h3>Xem điểm cá nhân</h3>
+                        <p>Kiểm tra điểm các môn học, điểm rèn luyện và kết quả học tập chi tiết.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="../../Pic/giang-day.png" alt="">
+                    <div class="text">
+                        <h3>Đăng ký môn học</h3>
+                        <p>Thực hiện đăng ký các môn học cho kỳ học mới một cách dễ dàng.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="../../Pic/giang-day.png" alt="">
+                    <div class="text">
+                        <h3>Gửi phản hồi</h3>
+                        <p>Gửi câu hỏi, ý kiến và phản hồi trực tiếp đến giảng viên hoặc nhà trường.</p>
+                    </div>
+                </div>
             </div>
         </div>
 

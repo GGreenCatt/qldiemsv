@@ -130,8 +130,8 @@
                                 <p>Email</p>
                                 <input type="text" name="email" value="<%= GMAIL %>" placeholder="Hello@gmail.com" />
                             </div>
-                            <div class="add-button" style="margin-left: 4px">
-                                <button type="submit" name="save">Lưu</button>
+                            <div class="add-button" style="margin-left:">
+                                <button type="submit" name="save" style="margin: 0">Lưu</button>
                             </div>
                         </div>
                         <div class="col-1">
