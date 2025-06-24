@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Icon -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
     <link rel="stylesheet" href="../../css.css">
     <meta charset="UTF-8" />
@@ -18,7 +17,7 @@
         return;
     }
     
-    String id = request.getParameter("id");
+    String id = request.getParameter("id"); // Đây là MA_LOP của lớp hiện tại
     if(id == null || id.trim().isEmpty()){
         response.sendRedirect("DS-LOP.jsp");
         return;
@@ -49,10 +48,11 @@
             }
             rs = ps.executeQuery();
         } else {
+            // Lấy thông tin sinh viên thuộc lớp hiện tại
             String sql = "SELECT thamgiahoc.MA_SV, MA_LOP, sinhvien.ID_SV, sinhvien.TEN_SV, sinhvien.NGAYSINH, sinhvien.GIOITINH, sinhvien.DIACHI, sinhvien.SDT, sinhvien.GMAIL " +
                          "FROM thamgiahoc INNER JOIN sinhvien ON sinhvien.MA_SV = thamgiahoc.MA_SV WHERE MA_LOP = ?";
             ps = conn.prepareStatement(sql);
-            ps.setString(1, id);
+            ps.setString(1, id); // id ở đây là MA_LOP
             rs = ps.executeQuery();
         }
 %>
@@ -65,7 +65,7 @@
             <form class="example" method="post" style="max-width:300px">
                 <input style="width: 250px;" type="text" placeholder="Họ tên..." name="search2" id="myInput" onkeyup="myFunction()" value="<%= (searchText != null) ? searchText : "" %>">
             </form>
-            <button class="Add"><a class="Add" href="Them-SV.jsp">+Thêm sinh viên</a></button>
+            <button class="Add"><a class="Add" href="Them-SV.jsp?malop=<%= id %>">+Thêm sinh viên</a></button>
         </div>
 
         <table class="list" id="myTable">

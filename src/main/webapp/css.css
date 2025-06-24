@@ -667,3 +667,86 @@ form.example input[type=text] {
     margin: 5px 0; /* Khoảng cách giữa các dòng văn bản */
     font-size: 0.9em; /* Kích thước chữ nhỏ hơn một chút */
 }
+/* Thêm vào cuối file css.css của bạn */
+
+/* Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px; /* Location of the box */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: rgba(39,39,56,255); /* Màu nền tương tự các phần khác của bạn */
+    color: white;
+    margin: 5% auto; /* 5% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 500px; /* Max width for larger screens */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    position: relative; /* Needed for close button positioning */
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.modal-content p {
+    margin-bottom: 10px;
+}
+
+.modal-content input[type="file"] {
+    width: calc(100% - 22px); /* Adjust for padding/border */
+    padding: 10px;
+    margin: 10px 0;
+    background-color: rgba(32,32,32,255);
+    border: 1px solid gray;
+    border-radius: 5px;
+    color: white;
+}
+
+.modal-content button[type="submit"] {
+    padding: 10px 20px;
+    background-color: rgba(72,133,237,255);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    float: right; /* Align to the right */
+    margin-top: 10px;
+}
+
+.modal-content button[type="submit"]:hover {
+    background-color: #4267b2; /* Darker blue on hover */
+}
+
+/* The Close Button */
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}

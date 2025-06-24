@@ -1,10 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="controller.DatabaseConnection" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--Icon-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
     <link rel="stylesheet" href="../../css.css">
     <meta charset="UTF-8" />
@@ -19,6 +20,15 @@
     }
 
     String message = "";
+    // Lấy thông báo từ request nếu có (sau khi import Excel)
+    if (request.getParameter("message") != null) {
+        message = request.getParameter("message");
+    }
+
+    String defaultMaLop = request.getParameter("malop"); // Lấy mã lớp từ URL nếu có
+    boolean isClassSpecific = (defaultMaLop != null && !defaultMaLop.isEmpty());
+
+    // --- Xử lý POST request để thêm sinh viên (form thủ công) ---
     if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("save") != null) {
         String MASV = request.getParameter("masv");
         String TENSV = request.getParameter("tensv");
@@ -27,33 +37,125 @@
         String GMAIL = request.getParameter("email");
         String GIOITINH = request.getParameter("gioitinh");
         String NGAYSINH = request.getParameter("ngaysinh");
+        String selectedMaLop = request.getParameter("malop"); // Lấy mã lớp từ form
 
         Connection conn = null;
         PreparedStatement pstmt = null;
+        PreparedStatement pstmtThamGiaHoc = null; 
         try {
             conn = DatabaseConnection.getConnection();
-            String sql = "INSERT INTO sinhvien (MA_SV, TEN_SV, SDT, DIACHI, GIOITINH, NGAYSINH, GMAIL) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, MASV);
+            conn.setAutoCommit(false); 
+
+            String sqlInsertSV = "INSERT INTO sinhvien (MA_SV, TEN_SV, SDT, DIACHI, GIOITINH, NGAYSINH, GMAIL) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            pstmt = conn.prepareStatement(sqlInsertSV);
+            try {
+                 pstmt.setInt(1, Integer.parseInt(MASV)); 
+            } catch (NumberFormatException e) {
+                message = "Lỗi: Mã sinh viên không hợp lệ.";
+                throw e; 
+            }
             pstmt.setString(2, TENSV);
-            pstmt.setString(3, SDT);
+            try {
+                if (SDT != null && !SDT.isEmpty()) {
+                    pstmt.setInt(3, Integer.parseInt(SDT)); 
+                } else {
+                    pstmt.setNull(3, java.sql.Types.INTEGER);
+                }
+            } catch (NumberFormatException e) {
+                message = "Lỗi: Số điện thoại không hợp lệ.";
+                throw e; 
+            }
             pstmt.setString(4, DIACHI);
             pstmt.setString(5, GIOITINH);
-            pstmt.setString(6, NGAYSINH);
+            pstmt.setString(6, NGAYSINH); 
             pstmt.setString(7, GMAIL);
 
-            int row = pstmt.executeUpdate();
-            if (row > 0) {
-                message = "Thành công";
-            } else {
-                message = "Thất bại";
+            int rowSV = pstmt.executeUpdate();
+
+            if (rowSV > 0 && selectedMaLop != null && !selectedMaLop.isEmpty()) {
+                String sqlInsertThamGiaHoc = "INSERT INTO thamgiahoc (MA_LOP, MA_SV) VALUES (?, ?)";
+                pstmtThamGiaHoc = conn.prepareStatement(sqlInsertThamGiaHoc);
+                pstmtThamGiaHoc.setString(1, selectedMaLop);
+                pstmtThamGiaHoc.setInt(2, Integer.parseInt(MASV)); 
+
+                int rowThamGiaHoc = pstmtThamGiaHoc.executeUpdate();
+                if (rowThamGiaHoc > 0) {
+                    conn.commit(); 
+                    message = "Thêm sinh viên và phân lớp thành công!";
+                } else {
+                    conn.rollback(); 
+                    message = "Thêm sinh viên thất bại: Không thể phân lớp.";
+                }
+            } else if (rowSV > 0) {
+                 conn.commit(); 
+                 message = "Thêm sinh viên thành công!";
             }
+            else {
+                conn.rollback(); 
+                message = "Thêm sinh viên thất bại.";
+            }
+
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback(); 
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (e.getMessage().contains("Duplicate entry") && e.getMessage().contains("for key 'sinhvien.MA_SV'")) {
+                 message = "Lỗi: Mã sinh viên đã tồn tại. Vui lòng chọn mã khác.";
+            } else {
+                 message = "Lỗi cơ sở dữ liệu: " + e.getMessage();
+            }
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            message = "Lỗi định dạng dữ liệu: Mã sinh viên hoặc Số điện thoại phải là số.";
+            e.printStackTrace();
         } catch (Exception e) {
-            message = "Lỗi: " + e.getMessage();
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            message = "Lỗi không xác định: " + e.getMessage();
+            e.printStackTrace();
         } finally {
-            if (pstmt != null) try { pstmt.close(); } catch (Exception ignored) {}
-            if (conn != null) try { conn.close(); } catch (Exception ignored) {}
+            if (pstmtThamGiaHoc != null) try { pstmtThamGiaHoc.close(); } catch (SQLException ignored) {}
+            if (pstmt != null) try { pstmt.close(); } catch (SQLException ignored) {}
+            if (conn != null) try { conn.close(); } catch (SQLException ignored) {}
         }
+    }
+
+    // --- Lấy danh sách các lớp để điền vào dropdown ---
+    List<String[]> classes = new ArrayList<>(); // String[] {MA_LOP, TEN_LOP}
+    Connection connClasses = null;
+    PreparedStatement pstmtClasses = null;
+    ResultSet rsClasses = null;
+    try {
+        connClasses = DatabaseConnection.getConnection();
+        String sqlSelectClasses = "SELECT MA_LOP, TEN_LOP FROM lop ORDER BY TEN_LOP";
+        pstmtClasses = connClasses.prepareStatement(sqlSelectClasses);
+        rsClasses = pstmtClasses.executeQuery();
+        while (rsClasses.next()) {
+            classes.add(new String[]{rsClasses.getString("MA_LOP"), rsClasses.getString("TEN_LOP")});
+        }
+    } catch (SQLException e) {
+        System.out.println("Lỗi khi tải danh sách lớp: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        if (rsClasses != null) try { rsClasses.close(); } catch (SQLException ignored) {}
+        if (pstmtClasses != null) try { pstmtClasses.close(); } catch (SQLException ignored) {}
+        if (connClasses != null) try { connClasses.close(); } catch (SQLException ignored) {}
     }
 %>
 
@@ -65,7 +167,6 @@
             <div class="row-3" style="height: 650px;">
                 <h5>Thông tin sinh viên</h5><hr>
                 <div class="contaner">
-
                     <div class="col-right">
                         <div class="col-1">
                             <div class="mb-3">
@@ -97,19 +198,52 @@
                             </div>
                             <div class="mb-3">
                                 <p>Mã lớp</p>
-                                <input type="text" name="malop" placeholder="Mã lớp..." required />
+                                <select name="malop" <%= isClassSpecific ? "disabled" : "" %>>
+                                    <option value="">-- Chọn lớp --</option>
+                                    <%
+                                        for (String[] cls : classes) {
+                                            String maLop = cls[0];
+                                            String tenLop = cls[1];
+                                            String selected = "";
+                                            if (isClassSpecific && maLop.equals(defaultMaLop)) {
+                                                selected = "selected";
+                                            }
+                                    %>
+                                            <option value="<%= maLop %>" <%= selected %>><%= tenLop %> (<%= maLop %>)</option>
+                                    <%
+                                        }
+                                    %>
+                                </select>
+                                <% if (isClassSpecific) { %>
+                                    <input type="hidden" name="malop" value="<%= defaultMaLop %>">
+                                <% } %>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="add-button" style="margin-left: 4px">
                     <button type="submit" name="save">Lưu</button>
+                    <button type="button" class="Add" id="openExcelModalButton">Nhập từ file Excel</button>
                 </div>
             </div>
         </form>
         <% if (!message.isEmpty()) { %>
             <script>alert("<%= message %>");</script>
         <% } %>
+
+        <div id="excelImportModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Nhập sinh viên từ File Excel</h2>
+                <p>Vui lòng tải xuống file mẫu, điền dữ liệu và tải lên:</p>
+                <p><a href="../../files/Student_Import_Template.xlsx" download>Tải file Excel mẫu</a></p>
+                <form action="processExcelImport.jsp" method="post" enctype="multipart/form-data">
+                    <input type="file" name="excelFile" accept=".xls,.xlsx" required>
+                    <button type="submit" name="uploadExcel">Tải lên</button>
+                </form>
+            </div>
+        </div>
+
         <div class="footer">
         <p>Copyright © Thiết kế & Xây dựng bởi Dung & Long 2025</p>
         </div>
