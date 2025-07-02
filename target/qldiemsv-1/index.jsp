@@ -46,7 +46,7 @@
                           <input class="btn btn-dark btn-lg btn-block" type="submit" value="Login"></input>
                         </div>
       
-                        <a class="small text-muted" href="#!">Quên mật khẩu?</a>
+
 
 
                       </form>

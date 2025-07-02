@@ -14,6 +14,46 @@
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.net.URLDecoder" %>
+<%@ page import="java.util.LinkedHashMap" %>
+<%@ page import="java.util.Map" %>
+
+<%!
+    // Helper method to get cell value as string (đã di chuyển lên đầu file)
+    private String getCellValueAsString(Cell cell) {
+        if (cell == null) {
+            return "";
+        }
+        switch (cell.getCellType()) {
+            case STRING:
+                return cell.getStringCellValue();
+            case NUMERIC:
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng ngày tháng
+                    return sdf.format(cell.getDateCellValue());
+                } else {
+                    // Trả về giá trị số dưới dạng chuỗi (ví dụ cho ID, SĐT)
+                    return String.valueOf(new java.math.BigDecimal(cell.getNumericCellValue()).toPlainString());
+                }
+            case BOOLEAN:
+                return String.valueOf(cell.getBooleanCellValue());
+            case FORMULA:
+                try {
+                    // Cố gắng lấy giá trị số nếu là công thức số, nếu không thì chuỗi
+                    return String.valueOf(new java.math.BigDecimal(cell.getNumericCellValue()).toPlainString());
+                } catch (IllegalStateException e) {
+                    return cell.getStringCellValue();
+                } catch (Exception e) {
+                    return ""; // Fallback an toàn
+                }
+            case BLANK:
+                return "";
+            default:
+                return "";
+        }
+    }
+%>
 
 <%
     String message = "";
@@ -21,27 +61,38 @@
     PreparedStatement pstmtSV = null;
     PreparedStatement pstmtThamGiaHoc = null;
 
+    // Lấy mã lớp để gán tất cả sinh viên vào (nếu có từ Them-SV.jsp)
+    String maLopFromRequest = request.getParameter("maLopToAssign"); 
+
     // Kiểm tra đăng nhập
     if (session == null || session.getAttribute("username") == null) {
-        response.sendRedirect("index.jsp"); // Chuyển hướng về trang đăng nhập nếu chưa login
+        response.sendRedirect("index.jsp"); 
         return;
     }
 
     try {
         // Lấy file từ request
-        Part filePart = request.getPart("excelFile"); // "excelFile" là tên của input type="file" trong form
+        Part filePart = request.getPart("excelFile"); 
+        
+        // --- THAY ĐỔI Ở ĐÂY: Thêm kiểm tra null cho filePart ---
+        if (filePart == null) {
+            message = "Lỗi: Không tìm thấy file được gửi lên. Vui lòng chọn file.";
+            System.err.println("ERROR: filePart is NULL in processExcelImport.jsp!");
+            response.sendRedirect("Them-SV.jsp?message=" + URLEncoder.encode(message, "UTF-8"));
+            return; // Dừng xử lý
+        }
+
         String fileName = filePart.getSubmittedFileName();
 
         if (fileName == null || fileName.isEmpty()) {
             message = "Vui lòng chọn một file Excel.";
-            response.sendRedirect("Them-SV.jsp?message=" + java.net.URLEncoder.encode(message, "UTF-8"));
+            response.sendRedirect("Them-SV.jsp?message=" + URLEncoder.encode(message, "UTF-8"));
             return;
         }
 
-        // Chỉ chấp nhận file .xls hoặc .xlsx
         if (!fileName.toLowerCase().endsWith(".xls") && !fileName.toLowerCase().endsWith(".xlsx")) {
             message = "File không đúng định dạng. Vui lòng chọn file .xls hoặc .xlsx.";
-            response.sendRedirect("Them-SV.jsp?message=" + java.net.URLEncoder.encode(message, "UTF-8"));
+            response.sendRedirect("Them-SV.jsp?message=" + URLEncoder.encode(message, "UTF-8"));
             return;
         }
 
@@ -55,13 +106,13 @@
 
         Iterator<Row> rowIterator = sheet.iterator();
 
-        // Bỏ qua hàng tiêu đề (nếu hàng đầu tiên là tiêu đề)
+        // Bỏ qua hàng tiêu đề
         if (rowIterator.hasNext()) {
-            rowIterator.next(); // Bỏ qua hàng đầu tiên
+            rowIterator.next(); 
         }
 
         // Prepare SQL statements for batch insertion
-        String sqlInsertSV = "INSERT INTO sinhvien (MA_SV, TEN_SV, SDT, DIACHI, GIOITINH, NGAYSINH, GMAIL) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sqlInsertSV = "INSERT INTO sinhvien (MA_SV, TEN_SV, SDT, DIACHI, GIOITINH, NGAYSINH, GMAIL, MA_KH) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         String sqlInsertThamGiaHoc = "INSERT INTO thamgiahoc (MA_LOP, MA_SV) VALUES (?, ?)";
         pstmtSV = conn.prepareStatement(sqlInsertSV);
         pstmtThamGiaHoc = conn.prepareStatement(sqlInsertThamGiaHoc);
@@ -73,21 +124,23 @@
             Row row = rowIterator.next();
             if (row.getPhysicalNumberOfCells() == 0) continue; // Bỏ qua hàng trống
 
+            String maLopExcel = ""; 
+            
             try {
                 // Đọc dữ liệu từ các cột
-                // Điều chỉnh chỉ số cột (0-indexed) cho phù hợp với file Excel mẫu của bạn
                 String maSv = getCellValueAsString(row.getCell(0));     // Cột A: MA_SV
                 String tenSv = getCellValueAsString(row.getCell(1));    // Cột B: TEN_SV
-                String ngaySinhStr = getCellValueAsString(row.getCell(2)); // Cột C: NGAYSINH (định dạng YYYY-MM-DD)
+                String ngaySinhStr = getCellValueAsString(row.getCell(2)); // Cột C: NGAYSINH (định dạng underscored-MM-DD)
                 String gioiTinh = getCellValueAsString(row.getCell(3)); // Cột D: GIOITINH
                 String diaChi = getCellValueAsString(row.getCell(4));   // Cột E: DIACHI
                 String sdtStr = getCellValueAsString(row.getCell(5));   // Cột F: SDT
                 String gmail = getCellValueAsString(row.getCell(6));    // Cột G: GMAIL
-                String maLop = getCellValueAsString(row.getCell(7));    // Cột H: MA_LOP (có thể trống nếu không gán lớp)
+                maLopExcel = getCellValueAsString(row.getCell(7)); // Cột H: MA_LOP (nếu có trong Excel)
+                String maKH = getCellValueAsString(row.getCell(8));    // Cột I: MA_KH (Mã khóa học)
 
-                // Basic Validation (có thể mở rộng thêm)
-                if (maSv.isEmpty() || tenSv.isEmpty()) {
-                    throw new IllegalArgumentException("Mã sinh viên hoặc Tên sinh viên không được trống.");
+                // Basic Validation
+                if (maSv.isEmpty() || tenSv.isEmpty() || maKH.isEmpty()) { 
+                    throw new IllegalArgumentException("Mã sinh viên, Tên sinh viên hoặc Mã khóa học không được trống.");
                 }
 
                 // Thêm sinh viên vào bảng sinhvien
@@ -102,14 +155,24 @@
                 pstmtSV.setString(5, gioiTinh);
                 pstmtSV.setString(6, ngaySinhStr);
                 pstmtSV.setString(7, gmail);
+                pstmtSV.setString(8, maKH); 
                 pstmtSV.addBatch();
 
-                // Thêm sinh viên vào bảng thamgiahoc nếu có mã lớp
-                if (maLop != null && !maLop.isEmpty()) {
-                    pstmtThamGiaHoc.setString(1, maLop);
+                // Logic gán lớp: ưu tiên maLopFromRequest (từ URL), nếu không có thì dùng từ Excel
+                String finalMaLopForAssignment = maLopFromRequest;
+                if (finalMaLopForAssignment == null || finalMaLopForAssignment.isEmpty()) {
+                    finalMaLopForAssignment = maLopExcel; 
+                }
+
+                // Thêm sinh viên vào bảng thamgiahoc nếu có mã lớp để gán
+                if (finalMaLopForAssignment != null && !finalMaLopForAssignment.isEmpty()) {
+                    pstmtThamGiaHoc.setString(1, finalMaLopForAssignment);
                     pstmtThamGiaHoc.setInt(2, Integer.parseInt(maSv));
                     pstmtThamGiaHoc.addBatch();
+                } else {
+                    errorDetails.append("Hàng ").append(row.getRowNum() + 1).append(": Không có mã lớp để gán.<br>");
                 }
+
                 successfulImports++;
 
             } catch (Exception e) {
@@ -131,7 +194,7 @@
     } catch (Exception e) {
         if (conn != null) {
             try {
-                conn.rollback(); // Rollback nếu có lỗi tổng quát
+                conn.rollback(); 
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -145,39 +208,10 @@
     }
 
     // Chuyển hướng về trang Them-SV.jsp với thông báo
-    response.sendRedirect("Them-SV.jsp?message=" + java.net.URLEncoder.encode(message, "UTF-8"));
-%>
-
-<%!
-    // Helper method to get cell value as string (đặt trong scriptlet khai báo)
-    private String getCellValueAsString(Cell cell) {
-        if (cell == null) {
-            return "";
-        }
-        switch (cell.getCellType()) {
-            case STRING:
-                return cell.getStringCellValue();
-            case NUMERIC:
-                if (DateUtil.isCellDateFormatted(cell)) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng ngày tháng
-                    return sdf.format(cell.getDateCellValue());
-                } else {
-                    // Trả về giá trị số dưới dạng chuỗi, ví dụ cho mã sinh viên, SĐT
-                    return String.valueOf(new Double(cell.getNumericCellValue()).longValue());
-                }
-            case BOOLEAN:
-                return String.valueOf(cell.getBooleanCellValue());
-            case FORMULA:
-                // Cần thận trọng khi xử lý công thức, có thể cần evaluator
-                try {
-                    return String.valueOf(cell.getNumericCellValue()); // Cố gắng lấy giá trị số nếu là công thức số
-                } catch (IllegalStateException e) {
-                    return cell.getStringCellValue(); // Hoặc chuỗi nếu là công thức chuỗi
-                }
-            case BLANK:
-                return "";
-            default:
-                return "";
-        }
+    String redirectUrl = "Them-SV.jsp?message=" + URLEncoder.encode(message, "UTF-8");
+    if (maLopFromRequest != null && !maLopFromRequest.isEmpty()) {
+        redirectUrl += "&malop=" + URLEncoder.encode(maLopFromRequest, "UTF-8");
     }
+    response.sendRedirect(redirectUrl);
+    return;
 %>

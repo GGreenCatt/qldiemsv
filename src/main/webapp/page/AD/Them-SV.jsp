@@ -3,6 +3,8 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.net.URLDecoder" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,15 +16,17 @@
 </head>
 <body>
 <%
+    // Kiểm tra phiên đăng nhập
     if (session == null || session.getAttribute("username") == null) {
         response.sendRedirect("../../index.jsp");
         return;
     }
 
     String message = "";
-    // Lấy thông báo từ request nếu có (sau khi import Excel)
+    // Lấy thông báo từ request nếu có (sau khi redirect)
     if (request.getParameter("message") != null) {
-        message = request.getParameter("message");
+        // Cần decode để hiển thị đúng ký tự tiếng Việt hoặc ký tự đặc biệt
+        message = new String(java.net.URLDecoder.decode(request.getParameter("message"), "UTF-8"));
     }
 
     String defaultMaLop = request.getParameter("malop"); // Lấy mã lớp từ URL nếu có
@@ -34,10 +38,11 @@
         String TENSV = request.getParameter("tensv");
         String DIACHI = request.getParameter("diachi");
         String SDT = request.getParameter("sdt");
-        String GMAIL = request.getParameter("email");
+        String GMAIL = request.getParameter("gmail"); // Đổi từ "email" sang "gmail"
         String GIOITINH = request.getParameter("gioitinh");
         String NGAYSINH = request.getParameter("ngaysinh");
-        String selectedMaLop = request.getParameter("malop"); // Lấy mã lớp từ form
+        String selectedMaLop = request.getParameter("malop");
+        String selectedMaKH = request.getParameter("makh"); // Lấy mã khóa học
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -46,7 +51,8 @@
             conn = DatabaseConnection.getConnection();
             conn.setAutoCommit(false); 
 
-            String sqlInsertSV = "INSERT INTO sinhvien (MA_SV, TEN_SV, SDT, DIACHI, GIOITINH, NGAYSINH, GMAIL) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            // 1. Chèn vào bảng sinhvien (bao gồm cả MA_KH)
+            String sqlInsertSV = "INSERT INTO sinhvien (MA_SV, TEN_SV, SDT, DIACHI, GIOITINH, NGAYSINH, GMAIL, MA_KH) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             pstmt = conn.prepareStatement(sqlInsertSV);
             try {
                  pstmt.setInt(1, Integer.parseInt(MASV)); 
@@ -69,9 +75,11 @@
             pstmt.setString(5, GIOITINH);
             pstmt.setString(6, NGAYSINH); 
             pstmt.setString(7, GMAIL);
+            pstmt.setString(8, selectedMaKH); // Thêm MA_KH
 
             int rowSV = pstmt.executeUpdate();
 
+            // 2. Chèn vào bảng thamgiahoc nếu selectedMaLop có giá trị
             if (rowSV > 0 && selectedMaLop != null && !selectedMaLop.isEmpty()) {
                 String sqlInsertThamGiaHoc = "INSERT INTO thamgiahoc (MA_LOP, MA_SV) VALUES (?, ?)";
                 pstmtThamGiaHoc = conn.prepareStatement(sqlInsertThamGiaHoc);
@@ -119,8 +127,8 @@
             }
             message = "Lỗi định dạng dữ liệu: Mã sinh viên hoặc Số điện thoại phải là số.";
             e.printStackTrace();
-        } catch (Exception e) {
-            if (conn != null) {
+        } catch (Exception e) { 
+             if (conn != null) {
                 try {
                     conn.rollback();
                 } catch (SQLException ex) {
@@ -134,10 +142,18 @@
             if (pstmt != null) try { pstmt.close(); } catch (SQLException ignored) {}
             if (conn != null) try { conn.close(); } catch (SQLException ignored) {}
         }
+        
+        // --- CHUYỂN HƯỚNG SAU KHI XỬ LÝ POST ---
+        String redirectUrl = "Them-SV.jsp?message=" + URLEncoder.encode(message, "UTF-8");
+        if (defaultMaLop != null && !defaultMaLop.isEmpty()) {
+            redirectUrl += "&malop=" + URLEncoder.encode(defaultMaLop, "UTF-8");
+        }
+        response.sendRedirect(redirectUrl);
+        return; 
     }
 
     // --- Lấy danh sách các lớp để điền vào dropdown ---
-    List<String[]> classes = new ArrayList<>(); // String[] {MA_LOP, TEN_LOP}
+    List<String[]> classes = new ArrayList<>(); 
     Connection connClasses = null;
     PreparedStatement pstmtClasses = null;
     ResultSet rsClasses = null;
@@ -156,6 +172,28 @@
         if (rsClasses != null) try { rsClasses.close(); } catch (SQLException ignored) {}
         if (pstmtClasses != null) try { pstmtClasses.close(); } catch (SQLException ignored) {}
         if (connClasses != null) try { connClasses.close(); } catch (SQLException ignored) {}
+    }
+
+    // --- Lấy danh sách các khóa học để điền vào dropdown ---
+    List<String[]> courses = new ArrayList<>(); 
+    Connection connCourses = null;
+    PreparedStatement pstmtCourses = null;
+    ResultSet rsCourses = null;
+    try {
+        connCourses = DatabaseConnection.getConnection();
+        String sqlSelectCourses = "SELECT MA_KH, TEN_KH FROM khoahoc ORDER BY TEN_KH"; 
+        pstmtCourses = connCourses.prepareStatement(sqlSelectCourses);
+        rsCourses = pstmtCourses.executeQuery();
+        while (rsCourses.next()) {
+            courses.add(new String[]{rsCourses.getString("MA_KH"), rsCourses.getString("TEN_KH")});
+        }
+    } catch (SQLException e) {
+        System.out.println("Lỗi khi tải danh sách khóa học: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        if (rsCourses != null) try { rsCourses.close(); } catch (SQLException ignored) {}
+        if (pstmtCourses != null) try { pstmtCourses.close(); } catch (SQLException ignored) {}
+        if (connCourses != null) try { connCourses.close(); } catch (SQLException ignored) {}
     }
 %>
 
@@ -180,7 +218,7 @@
                             </div>
                             <div class="mb-3">
                                 <p>Email</p>
-                                <input type="text" name="email" placeholder="Gmail..." />
+                                <input type="text" name="gmail" placeholder="Gmail..." />
                             </div>
                             <div class="mb-3">
                                 <p>Địa chỉ</p>
@@ -195,6 +233,21 @@
                             <div class="mb-3">
                                 <p>Mã sinh viên</p>
                                 <input type="text" name="masv" placeholder="Mã sinh viên..." required />
+                            </div>
+                            <div class="mb-3">
+                                <p>Mã khóa học</p>
+                                <select name="makh" required>
+                                    <option value="">-- Chọn khóa học --</option>
+                                    <%
+                                        for (String[] course : courses) {
+                                            String maKH = course[0];
+                                            String tenKH = course[1];
+                                    %>
+                                            <option value="<%= maKH %>"><%= tenKH %> (<%= maKH %>)</option>
+                                    <%
+                                        }
+                                    %>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <p>Mã lớp</p>
@@ -223,12 +276,16 @@
                 </div>
                 <div class="add-button" style="margin-left: 4px">
                     <button type="submit" name="save">Lưu</button>
-                    <button type="button" class="Add" id="openExcelModalButton">Nhập từ file Excel</button>
+                    
                 </div>
             </div>
         </form>
-        <% if (!message.isEmpty()) { %>
-            <script>alert("<%= message %>");</script>
+        <% if (message != null && !message.isEmpty()) { %>
+            <script>
+                // Thoát chuỗi JavaScript an toàn
+                var escapedMessage = "<%= message.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r") %>";
+                alert(escapedMessage);
+            </script>
         <% } %>
 
         <div id="excelImportModal" class="modal">
@@ -239,6 +296,9 @@
                 <p><a href="../../files/Student_Import_Template.xlsx" download>Tải file Excel mẫu</a></p>
                 <form action="processExcelImport.jsp" method="post" enctype="multipart/form-data">
                     <input type="file" name="excelFile" accept=".xls,.xlsx" required>
+                    <% if (isClassSpecific) { %>
+                        <input type="hidden" name="maLopToAssign" value="<%= defaultMaLop %>">
+                    <% } %>
                     <button type="submit" name="uploadExcel">Tải lên</button>
                 </form>
             </div>

@@ -667,7 +667,7 @@ form.example input[type=text] {
     margin: 5px 0; /* Khoảng cách giữa các dòng văn bản */
     font-size: 0.9em; /* Kích thước chữ nhỏ hơn một chút */
 }
-/* Thêm vào cuối file css.css của bạn */
+/* --- Cập nhật phần CSS cho Modal trong file css.css của bạn --- */
 
 /* Modal (background) */
 .modal {
@@ -679,74 +679,109 @@ form.example input[type=text] {
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    background-color: rgba(0,0,0,0.6); /* Black w/ more opacity */
     padding-top: 60px; /* Location of the box */
 }
 
 /* Modal Content/Box */
 .modal-content {
     background-color: rgba(39,39,56,255); /* Màu nền tương tự các phần khác của bạn */
-    color: white;
+    color: whitesmoke; /* Màu chữ trắng sáng hơn */
     margin: 5% auto; /* 5% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
+    padding: 30px; /* Tăng padding */
+    border: 1px solid rgba(77,68,181,255); /* Border màu sắc hơn */
     width: 80%; /* Could be more or less, depending on screen size */
-    max-width: 500px; /* Max width for larger screens */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    position: relative; /* Needed for close button positioning */
+    max-width: 550px; /* Tăng max-width một chút */
+    border-radius: 10px; /* Bo tròn góc hơn */
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.4), 0 12px 40px 0 rgba(0, 0, 0, 0.3); /* Bóng đổ rõ hơn */
+    position: relative;
+    display: flex; /* Dùng flexbox để căn giữa nội dung */
+    flex-direction: column;
+    align-items: center; /* Căn giữa theo chiều ngang */
+    text-align: center; /* Căn giữa text */
 }
 
 .modal-content h2 {
+    font-size: 2em; /* Kích thước chữ lớn hơn */
     margin-top: 0;
-    margin-bottom: 20px;
-    text-align: center;
+    margin-bottom: 25px; /* Tăng khoảng cách dưới */
+    color: #ffd700; /* Màu goldenrod cho tiêu đề */
+    letter-spacing: 1px; /* Tăng khoảng cách chữ */
 }
 
 .modal-content p {
-    margin-bottom: 10px;
+    margin-bottom: 15px; /* Tăng khoảng cách dưới */
+    font-size: 1.1em; /* Kích thước chữ lớn hơn */
 }
 
+/* Liên kết Tải file Excel mẫu */
+.modal-content p a {
+    color: #4285F4; /* Màu xanh nổi bật hơn (Google Blue) */
+    text-decoration: underline; /* Gạch chân */
+    font-weight: bold; /* In đậm */
+    font-size: 1.2em; /* Kích thước chữ lớn hơn */
+    transition: color 0.3s ease; /* Hiệu ứng chuyển màu khi hover */
+}
+
+.modal-content p a:hover {
+    color: #3367D6; /* Màu xanh đậm hơn khi hover */
+}
+
+/* Kiểu cho input file (nếu có thể tùy chỉnh) */
 .modal-content input[type="file"] {
-    width: calc(100% - 22px); /* Adjust for padding/border */
-    padding: 10px;
-    margin: 10px 0;
+    width: calc(100% - 40px); /* Điều chỉnh lại chiều rộng */
+    padding: 12px; /* Tăng padding */
+    margin: 20px 0; /* Tăng khoảng cách trên dưới */
     background-color: rgba(32,32,32,255);
-    border: 1px solid gray;
-    border-radius: 5px;
+    border: 2px solid gray; /* Border rõ hơn */
+    border-radius: 8px; /* Bo tròn góc hơn */
     color: white;
+    font-size: 1em;
+    cursor: pointer;
+    text-align: left; /* Để chữ "Choose File" căn trái */
+}
+
+/* Nếu bạn muốn tùy chỉnh nút "Choose File" riêng, sẽ cần CSS phức tạp hơn hoặc JS */
+/* Ví dụ: Ẩn input mặc định và dùng label tùy chỉnh */
+
+.modal-content form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .modal-content button[type="submit"] {
-    padding: 10px 20px;
+    padding: 12px 30px; /* Tăng padding */
     background-color: rgba(72,133,237,255);
     border: none;
     border-radius: 5px;
     color: white;
-    font-size: 16px;
+    font-size: 1.1em; /* Kích thước chữ lớn hơn */
     cursor: pointer;
-    float: right; /* Align to the right */
-    margin-top: 10px;
+    margin-top: 20px; /* Tăng khoảng cách trên */
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu */
 }
 
 .modal-content button[type="submit"]:hover {
-    background-color: #4267b2; /* Darker blue on hover */
+    background-color: #4267b2; /* Màu xanh đậm hơn khi hover */
 }
 
 /* The Close Button */
 .close-button {
-    color: #aaa;
+    color: #ddd; /* Màu xám nhạt hơn */
     float: right;
-    font-size: 28px;
+    font-size: 32px; /* Kích thước lớn hơn */
     font-weight: bold;
     position: absolute;
     right: 15px;
     top: 10px;
+    transition: color 0.3s ease; /* Hiệu ứng chuyển màu */
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: white;
+    color: white; /* Màu trắng khi hover */
     text-decoration: none;
     cursor: pointer;
 }
